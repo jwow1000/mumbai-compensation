@@ -1,0 +1,26 @@
+#title {
+  font-size: 4rem;
+  text-align: center;
+  width: 100vw;
+}
+
+#choice-container {
+  width: 100vw;
+
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+
+}
+
+
+
+.buttons {
+  width: 8rem;
+  height: auto;
+  font-size: 1.5rem;
+  padding: 1rem;
+  text-align: center;
+  background-color: red;
+  color: black;
+}
