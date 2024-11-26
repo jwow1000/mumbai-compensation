@@ -4,9 +4,14 @@ import { dataMap } from "./assets/data.js";
 const game = document.querySelector('#game');
 const title = document.querySelector('#title');
 const choiceContainer = document.querySelector('#choice-container');
+const loadMessage = document.querySelector('.load-screen');
 
 
 // start at "start"
+loadMessage.addEventListener("click", (event) => {
+  event.target.style.opacity = 0;
+  event.target.style.pointerEvents = "none";
+});
 
 let render = dataMap.start
 
@@ -16,6 +21,7 @@ function clearButtons() {
 }
 
 function renderContent() {
+  
   // create the title
   title.textContent = render.label;
   
@@ -36,5 +42,7 @@ function renderContent() {
 
 
 }  
+// clear buttons on init
+clearButtons();
 renderContent();
 
