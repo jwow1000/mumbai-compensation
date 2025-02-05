@@ -13,9 +13,10 @@ export const dataMap = {
       {"label": "Try Again", "link": "start"}
     ] 
   },
+  // you need all fuve
 
   "ids": {
-    "label": "Choose Your Identification Method",
+    "label": "Can you present all of these documents",
     "choices": [
       {"label": "Compensation Claim form", "link": "boat"},
       {"label": "Ration Card", "link": "boat"},
@@ -33,7 +34,7 @@ export const dataMap = {
        
     ]
   },
-
+  // need all five here too
   "boatIds": {
     "label": "Choose a way to identify your boat",
     "choices": [
