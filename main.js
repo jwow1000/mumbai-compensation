@@ -124,9 +124,9 @@ class CompensationGame {
     const buttonWrap = document.createElement('div');
     const button = document.createElement('div');
     
-    buttonWrap.className = 'wrap-button';
+    buttonWrap.className = type === 'checks' ? 'check-list-wrapper' : 'wrap-button';
     // change class if a checklist
-    button.className = type === 'checks' ? 'checkListButtons' : 'buttons';
+    button.className = type === 'checks' ? 'check-list-buttons' : 'buttons';
     button.textContent = choice.label;
     
     // Set up transitions
@@ -140,7 +140,8 @@ class CompensationGame {
     if( type === 'checks') {
       // Add click handler for toggle states
       buttonWrap.addEventListener('click', () => {
-        buttonWrap.classList.toggle('selected');
+        console.log("does this work?");
+        button.classList.toggle('selected');
       }); 
     } else {
       // Add click handler for choices
@@ -160,7 +161,7 @@ class CompensationGame {
       const buttonWrap = document.createElement('div');
       const button = document.createElement('div'); 
       buttonWrap.className = 'wrap-button';
-      button.className = 'choice';
+      button.className = 'buttons';
       button.innerText = text;
       buttonWrap.appendChild( button );
       return buttonWrap;
@@ -170,7 +171,7 @@ class CompensationGame {
     const yesButton = makeButton('Yes');
     yesButton.addEventListener('click', () => {
       // get all checklist buttons, compare yes
-      const checks = document.querySelectorAll('.checkListButtons').length;
+      const checks = document.querySelectorAll('.check-list-buttons').length;
       const checksYes = document.querySelectorAll('.selected').length;
       if( checksYes >= checks ) {
         this.transitionToScene(yes.link);
@@ -196,6 +197,7 @@ class CompensationGame {
     
     if( this.currentScene.checklist ) {
       // Create and add checks buttons
+      console.log("checklist?")
       const buttons = this.currentScene.checklist.map(choice => { 
         return this.createChoiceButton(choice, 'checks');
       });
@@ -211,6 +213,7 @@ class CompensationGame {
       this.createYesNo(this.currentScene.choices[0],this.currentScene.choices[1] )
     } else {
       // Create and add the choices buttons
+      console.log("choices")
       const buttons = this.currentScene.choices.map(choice => { 
         return this.createChoiceButton(choice, 'buttons');
       }); 
