@@ -1,75 +1,3 @@
-// // import the dataMap object
-// import { dataMap } from "./assets/data.js";
-
-// const game = document.querySelector('#game');
-// const title = document.querySelector('#title');
-// const choiceContainer = document.querySelector('#choice-container');
-// const loadMessage = document.querySelector('.load-screen');
-// const fadeTime = 1000; // fade time out in ms
-
-// // start at "start"
-// loadMessage.addEventListener("click", (event) => {
-//   event.target.style.opacity = 0;
-//   event.target.style.pointerEvents = "none";
-// });
-
-// let render = dataMap.start;
-
-// function clearButtons() {
-//   // fade transition
-//   const allButtons = choiceContainer.querySelectorAll(".wrap-button");
-//   allButtons.forEach((button) => {
-//     button.style.filter = "blur(5px)";
-//     button.style.opacity = "0";
-
-//   });
-//   const delay = setTimeout(() => {
-//     // Clears all child elements (the buttons) inside #game
-//     choiceContainer.innerHTML = '';
-//   }, fadeTime);
-
-// }
-
-// function renderContent() {
-  
-//   // create the title
-//   title.textContent = render.label;
-  
-//   // create all the buttons
-//   render.choices.forEach( (choice) => {
-//     console.log( "choiiice", choice)
-//     const buttonWrap = document.createElement("div");
-//     const button = document.createElement("div");
-//     buttonWrap.className = "wrap-button";
-//     button.className = "buttons";
-//     button.textContent = choice.label;
-//     buttonWrap.addEventListener( "click", () => {
-//       clearButtons();
-//       render = dataMap[choice.link];
-//       setTimeout(() => {
-//         renderContent();
-      
-//       }, fadeTime); 
-//     });
-//     // add transition
-//     buttonWrap.style.transition = `filter ${fadeTime}ms ease-in-out`;
-//     buttonWrap.style.transition = `opacity ${fadeTime}ms ease-in-out`;
-//     buttonWrap.style.filter = "blur(5px)";
-//     buttonWrap.style.opacity = "0";
-//     buttonWrap.appendChild( button );
-//     choiceContainer.appendChild( buttonWrap );
-//     buttonWrap.style.filter = "blur(0px)";
-//     buttonWrap.style.opacity = "1";
-//   });
-
-
-// }  
-// // clear buttons on init
-// clearButtons();
-// setTimeout(() => {
-//   renderContent();
-
-// }, fadeTime);
 
 // Import the data map object
 import { dataMap } from "./assets/data.js";
@@ -105,6 +33,9 @@ class CompensationGame {
           Array.from(buttons).map(button => {
             button.style.filter = 'blur(5px)';
             button.style.opacity = '0';
+            
+            this.title.style.filter = 'blur(5px)'; 
+            this.title.style.opacity = '0'; 
             return new Promise(resolve => setTimeout(resolve, this.fadeTime));
           })
         )
@@ -131,16 +62,16 @@ class CompensationGame {
     
     // Set up transitions
     buttonWrap.style.transition = `
-    filter ${this.fadeTime}ms ease-in-out,
-    opacity ${this.fadeTime}ms ease-in-out
+      filter ${this.fadeTime}ms ease-in-out,
+      opacity ${this.fadeTime}ms ease-in-out
     `;
+    
     buttonWrap.style.filter = 'blur(5px)';
     buttonWrap.style.opacity = '0';
 
     if( type === 'checks') {
       // Add click handler for toggle states
       buttonWrap.addEventListener('click', () => {
-        console.log("does this work?");
         button.classList.toggle('selected');
       }); 
     } else {
@@ -209,6 +140,8 @@ class CompensationGame {
         button.style.filter = 'blur(0px)';
         button.style.opacity = '1';
       });
+      this.title.style.filter = 'blur(0px)'; 
+      this.title.style.opacity = '1'; 
       // add the corresponding yes and nos
       this.createYesNo(this.currentScene.choices[0],this.currentScene.choices[1] )
     } else {
@@ -225,6 +158,8 @@ class CompensationGame {
         button.style.filter = 'blur(0px)';
         button.style.opacity = '1';
       });
+      this.title.style.filter = 'blur(0px)'; 
+      this.title.style.opacity = '1'; 
     }
   }
 }
