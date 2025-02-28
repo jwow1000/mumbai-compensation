@@ -1,6 +1,7 @@
 
 // Import the data map object
 import { dataMap } from "./assets/data.js";
+import gsap from "gsap";
 
 class CompensationGame {
   constructor() {
@@ -20,14 +21,61 @@ class CompensationGame {
     //   this.loadMessage.style.opacity = 0;
     //   this.loadMessage.style.pointerEvents = 'none';
     // });
+    
 
+    const video = document.querySelector(".video-loop");
+    if (video) {
+      video.play().catch(error => console.log("Autoplay failed:", error));
+    }
+    
     // Start the game
     this.clearScene();
     setTimeout(() => this.renderScene(), this.fadeTime);
   }
+  
+  applyAnimation() {
+    // Continuous rotation for button wrappers
+    
+    gsap.utils.toArray(".drift").forEach((el) => {
+      gsap.to(el, {
+        x: "random(-50, 50, 10)", // Random horizontal drift
+        y: "random(-50, 50, 10)", // Random vertical drift
+        duration: "random(2, 6)", // Different speeds
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+    });
+    
+    gsap.to([".comp-button-wrapper", ".check-list-wrapper"], {
+      rotation: 360,
+      duration: 24,
+      repeat: -1,
+      ease: "linear"
+    });
+  
+
+    // // "Drift" movement with GSAP timeline
+    // gsap.to([".comp-button", ".check-list-button"], {
+    //   x: 50,
+    //   y: 0,
+    //   duration: 6,
+    //   repeat: -1,
+    //   yoyo: true,
+    //   ease: "power1.inOut"
+    // });
+
+    // Pause animation on hover
+    document.querySelectorAll(".comp-button, .check-list-button").forEach((button) => {
+      button.addEventListener("mouseenter", () => gsap.to(button, { paused: true }));
+      button.addEventListener("mouseleave", () => gsap.to(button, { paused: false }));
+    });
+
+
+  }
 
   async clearScene() {
-    const buttons = this.choiceContainer.querySelectorAll('.wrap-button');
+    const buttons = this.choiceContainer.querySelectorAll('.comp-button');
     const fadeOut = buttons.length > 0
       ? Promise.all(
           Array.from(buttons).map(button => {
@@ -52,57 +100,64 @@ class CompensationGame {
   }
 
   createChoiceButton(choice, type) {
-    const buttonWrap = document.createElement('div');
     const button = document.createElement('div');
+    const buttonWrap = document.createElement('div');
+    const buttonWrap1 = document.createElement('div');
     
-    buttonWrap.className = type === 'checks' ? 'check-list-wrapper' : 'wrap-button';
     // change class if a checklist
-    button.className = type === 'checks' ? 'check-list-buttons' : 'buttons';
+    button.className = type === 'checks' ? 'check-list-button' : 'comp-button';
+    button.classList.add('drift');
+    buttonWrap.className = type === 'checks' ? 'check-list-wrapper' : 'comp-button-wrapper';
     button.textContent = choice.label;
     
     // Set up transitions
-    buttonWrap.style.transition = `
+    button.style.transition = `
       filter ${this.fadeTime}ms ease-in-out,
       opacity ${this.fadeTime}ms ease-in-out
     `;
     
-    buttonWrap.style.filter = 'blur(5px)';
-    buttonWrap.style.opacity = '0';
+    button.style.filter = 'blur(5px)';
+    button.style.opacity = '0';
 
     if( type === 'checks') {
       // Add click handler for toggle states
-      buttonWrap.addEventListener('click', () => {
+      button.addEventListener('click', () => {
         button.classList.toggle('selected');
       }); 
     } else {
       // Add click handler for choices
-      buttonWrap.addEventListener('click', () => {
+      button.addEventListener('click', () => {
         this.transitionToScene(choice.link);
       });
     }
-
-    buttonWrap.appendChild(button);
-    return buttonWrap;
+    button.appendChild( buttonWrap );
+    return button ;
   }
 
   createYesNo( yes, no ) {
     const noYesWrapper = document.createElement('div');
     noYesWrapper.className = "noYesWrapper"; 
+    
     function makeButton( text ) {
-      const buttonWrap = document.createElement('div');
       const button = document.createElement('div'); 
-      buttonWrap.className = 'wrap-button';
-      button.className = 'buttons';
+      const buttonWrap = document.createElement('div');
+      const buttonWrap1 = document.createElement('div');
+      button.className = 'comp-button';
+      button.classList.add('drift');
+      buttonWrap.className = 'comp-button-wrapper';
+      buttonWrap1.className = 'comp-button-wrapper1';
       button.innerText = text;
-      buttonWrap.appendChild( button );
-      return buttonWrap;
+      buttonWrap.appendChild( buttonWrap1 );
+      button.appendChild( buttonWrap );
+      console.log("are we making buttons?: ", button)
+      return button;
     }
 
     // yes button
     const yesButton = makeButton('Yes');
     yesButton.addEventListener('click', () => {
       // get all checklist buttons, compare yes
-      const checks = document.querySelectorAll('.check-list-buttons').length;
+      const checks = document.querySelectorAll('.check-list-button').length;
       const checksYes = document.querySelectorAll('.selected').length;
       if( checksYes >= checks ) {
         this.transitionToScene(yes.link);
@@ -136,7 +191,10 @@ class CompensationGame {
       buttons.forEach( (button) => {
         this.choiceContainer.appendChild(button);
         // Trigger reflow to ensure transition works
-        button.offsetHeight;
+        button.style.display = 'none';
+        button.offsetHeight; // Force reflow
+        button.style.display = 'block';
+
         button.style.filter = 'blur(0px)';
         button.style.opacity = '1';
       });
@@ -148,9 +206,12 @@ class CompensationGame {
       // Create and add the choices buttons
       console.log("choices")
       const buttons = this.currentScene.choices.map(choice => { 
+        console.log("check the buttons: ", this.createChoiceButton(choice, 'buttons'))
         return this.createChoiceButton(choice, 'buttons');
       }); 
       // append the checks buttons to the container
+      console.log("are we making buttons?: ", buttons)
+
       buttons.forEach(button => {
         this.choiceContainer.appendChild(button);
         // Trigger reflow to ensure transition works
@@ -161,6 +222,7 @@ class CompensationGame {
       this.title.style.filter = 'blur(0px)'; 
       this.title.style.opacity = '1'; 
     }
+    this.applyAnimation();
   }
 }
 

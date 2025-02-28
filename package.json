@@ -13,5 +13,8 @@
     "copyfiles": "^2.4.1",
     "vite": "^5.4.9",
     "vite-plugin-mkcert": "^1.17.6"
+  },
+  "dependencies": {
+    "gsap": "^3.12.7"
   }
 }
