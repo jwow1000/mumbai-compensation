@@ -37,7 +37,7 @@ export const dataMap = {
     "checklist": [
       {"label": "Copy of boat license", "link": "boatSize"},
       {"label": "Boat registration documents", "link": "boatSize"},
-      {"label": "Insurance pepers", "link": "boatSize"},
+      {"label": "Insurance papers", "link": "boatSize"},
       {"label": "Copy of purchase or sale of boat", "link": "boatSize"},
       {"label": "Verification letter from fisherfolk society", "link": "boatSize"},
     ],

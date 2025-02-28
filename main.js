@@ -1,4 +1,3 @@
-
 // Import the data map object
 import { dataMap } from "./assets/data.js";
 import gsap from "gsap";
@@ -40,7 +39,7 @@ class CompensationGame {
       gsap.to(el, {
         x: "random(-50, 50, 10)", // Random horizontal drift
         y: "random(-50, 50, 10)", // Random vertical drift
-        duration: "random(2, 6)", // Different speeds
+        duration: "random(12, 24)", // Different speeds
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
@@ -53,17 +52,6 @@ class CompensationGame {
       repeat: -1,
       ease: "linear"
     });
-  
-
-    // // "Drift" movement with GSAP timeline
-    // gsap.to([".comp-button", ".check-list-button"], {
-    //   x: 50,
-    //   y: 0,
-    //   duration: 6,
-    //   repeat: -1,
-    //   yoyo: true,
-    //   ease: "power1.inOut"
-    // });
 
     // Pause animation on hover
     document.querySelectorAll(".comp-button, .check-list-button").forEach((button) => {
@@ -102,7 +90,6 @@ class CompensationGame {
   createChoiceButton(choice, type) {
     const button = document.createElement('div');
     const buttonWrap = document.createElement('div');
-    const buttonWrap1 = document.createElement('div');
     
     // change class if a checklist
     button.className = type === 'checks' ? 'check-list-button' : 'comp-button';
@@ -141,15 +128,11 @@ class CompensationGame {
     function makeButton( text ) {
       const button = document.createElement('div'); 
       const buttonWrap = document.createElement('div');
-      const buttonWrap1 = document.createElement('div');
       button.className = 'comp-button';
       button.classList.add('drift');
       buttonWrap.className = 'comp-button-wrapper';
-      buttonWrap1.className = 'comp-button-wrapper1';
       button.innerText = text;
-      buttonWrap.appendChild( buttonWrap1 );
       button.appendChild( buttonWrap );
-      console.log("are we making buttons?: ", button)
       return button;
     }
 
@@ -193,7 +176,7 @@ class CompensationGame {
         // Trigger reflow to ensure transition works
         button.style.display = 'none';
         button.offsetHeight; // Force reflow
-        button.style.display = 'block';
+        button.style.display = 'flex';
 
         button.style.filter = 'blur(0px)';
         button.style.opacity = '1';
@@ -204,13 +187,11 @@ class CompensationGame {
       this.createYesNo(this.currentScene.choices[0],this.currentScene.choices[1] )
     } else {
       // Create and add the choices buttons
-      console.log("choices")
       const buttons = this.currentScene.choices.map(choice => { 
         console.log("check the buttons: ", this.createChoiceButton(choice, 'buttons'))
         return this.createChoiceButton(choice, 'buttons');
       }); 
       // append the checks buttons to the container
-      console.log("are we making buttons?: ", buttons)
 
       buttons.forEach(button => {
         this.choiceContainer.appendChild(button);
