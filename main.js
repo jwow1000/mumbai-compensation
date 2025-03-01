@@ -6,7 +6,7 @@ class CompensationGame {
   constructor() {
     this.game = document.querySelector('#game');
     this.title = document.querySelector('#title');
-    this.choiceContainer = document.querySelector('#choice-container');
+    this.choiceContainer = document.querySelector('.choice-container');
     this.loadMessage = document.querySelector('.load-screen');
     this.fadeTime = 1000;
     this.currentScene = dataMap.start;
@@ -61,23 +61,19 @@ class CompensationGame {
 
 
   }
-
   async clearScene() {
-    const buttons = this.choiceContainer.querySelectorAll('.comp-button');
-    const fadeOut = buttons.length > 0
-      ? Promise.all(
-          Array.from(buttons).map(button => {
-            button.style.filter = 'blur(5px)';
-            button.style.opacity = '0';
-            
-            this.title.style.filter = 'blur(5px)'; 
-            this.title.style.opacity = '0'; 
-            return new Promise(resolve => setTimeout(resolve, this.fadeTime));
-          })
-        )
-      : Promise.resolve();
+    if (!this.choiceContainer) return; // Safety check
 
-    await fadeOut;
+    // Apply blur and fade-out effects
+    this.choiceContainer.style.filter = 'blur(5px)';
+    this.choiceContainer.style.opacity = '0';
+    this.title.style.filter = 'blur(5px)';
+    this.title.style.opacity = '0';
+
+    // Wait for the fade-out effect
+    await new Promise(resolve => setTimeout(resolve, this.fadeTime));
+
+    // Clear the container after fading out
     this.choiceContainer.innerHTML = '';
   }
 
@@ -88,7 +84,7 @@ class CompensationGame {
   }
 
   createChoiceButton(choice, type) {
-    const button = document.createElement('div');
+    const button = document.createElement('buttton');
     const buttonWrap = document.createElement('div');
     
     // change class if a checklist
@@ -96,15 +92,6 @@ class CompensationGame {
     button.classList.add('drift');
     buttonWrap.className = type === 'checks' ? 'check-list-wrapper' : 'comp-button-wrapper';
     button.textContent = choice.label;
-    
-    // Set up transitions
-    button.style.transition = `
-      filter ${this.fadeTime}ms ease-in-out,
-      opacity ${this.fadeTime}ms ease-in-out
-    `;
-    
-    button.style.filter = 'blur(5px)';
-    button.style.opacity = '0';
 
     if( type === 'checks') {
       // Add click handler for toggle states
@@ -126,7 +113,7 @@ class CompensationGame {
     noYesWrapper.className = "noYesWrapper"; 
     
     function makeButton( text ) {
-      const button = document.createElement('div'); 
+      const button = document.createElement('button'); 
       const buttonWrap = document.createElement('div');
       button.className = 'comp-button';
       button.classList.add('drift');
@@ -173,18 +160,15 @@ class CompensationGame {
       // append the checks buttons to the container
       buttons.forEach( (button) => {
         this.choiceContainer.appendChild(button);
-        // Trigger reflow to ensure transition works
-        button.style.display = 'none';
-        button.offsetHeight; // Force reflow
-        button.style.display = 'flex';
-
-        button.style.filter = 'blur(0px)';
-        button.style.opacity = '1';
       });
+      this.choiceContainer.style.filter = 'blur(0px)';
+      this.choiceContainer.style.opacity = '1'; 
       this.title.style.filter = 'blur(0px)'; 
       this.title.style.opacity = '1'; 
+      
       // add the corresponding yes and nos
       this.createYesNo(this.currentScene.choices[0],this.currentScene.choices[1] )
+    
     } else {
       // Create and add the choices buttons
       const buttons = this.currentScene.choices.map(choice => { 
@@ -195,11 +179,10 @@ class CompensationGame {
 
       buttons.forEach(button => {
         this.choiceContainer.appendChild(button);
-        // Trigger reflow to ensure transition works
-        button.offsetHeight;
-        button.style.filter = 'blur(0px)';
-        button.style.opacity = '1';
       });
+
+      this.choiceContainer.style.filter = 'blur(0px)';
+      this.choiceContainer.style.opacity = '1';
       this.title.style.filter = 'blur(0px)'; 
       this.title.style.opacity = '1'; 
     }
