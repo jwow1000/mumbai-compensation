@@ -1,37 +1,69 @@
 // Import the data map object
 import { dataMap } from "./assets/data.js";
+import { introData } from "./assets/introData.js";
 import gsap from "gsap";
 
 class CompensationGame {
   constructor() {
     this.game = document.querySelector('#game');
     this.title = document.querySelector('#title');
+    this.container = document.querySelector('.container');
     this.choiceContainer = document.querySelector('.choice-container');
     this.loadMessage = document.querySelector('.load-screen');
     this.fadeTime = 1000;
+    this.currentIntroScene = 0;
     this.currentScene = dataMap.start;
-
+    this.introTransitionActive = false;
     this.init();
   }
-
+  
   init() {
-    // // Set up load screen listener
-    // this.loadMessage.addEventListener('click', () => {
-    //   this.loadMessage.style.opacity = 0;
-    //   this.loadMessage.style.pointerEvents = 'none';
-    // });
-    
-
-    const video = document.querySelector(".video-loop");
-    if (video) {
-      video.play().catch(error => console.log("Autoplay failed:", error));
-    }
-    
-    // Start the game
     this.clearScene();
-    setTimeout(() => this.renderScene(), this.fadeTime);
+    this.introTransitionActive = true;
+    setTimeout(() => this.renderIntroScene(), this.fadeTime);
+    this.container.addEventListener("click", () => {
+      if(!this.introTransitionActive) {
+        this.introTransitionActive = true;
+        if(this.currentIntroScene > 5) {
+          // Start the game
+          this.introTime = false;
+          this.clearScene();
+          setTimeout(() => this.renderScene(), this.fadeTime);
+        } else {
+          console.log("trigger container event?", this.currentIntroScene)
+          this.transitionIntro();
+        }
+      }
+    });
+  }
+
+  async transitionIntro() {
+    await this.clearScene();
+    this.currentIntroScene = introData[this.currentIntroScene+1];
+    await this.renderIntroScene();
   }
   
+  async renderIntroScene() {
+    // make the circular div with children that wrap it
+    const introButton = document.createElement("div");
+    // add the class
+    introButton.classList.add('introButton');
+    introButton.textContent = introData[this.currentIntroScene].text;
+    // make the wrappers
+    for( let i=0; i<3; i++) {
+      const wrappButton = document.createElement("div"); 
+      wrappButton.classList.add('introButtonWrapper');
+      introButton.appendChild( wrappButton );
+    }
+    this.container.appendChild(introButton);
+    // apply the animation
+    this.applyAnimation();
+    // fade in
+    this.container.style.filter = 'blur(0px)';
+    this.container.style.opacity = '1';
+    
+    this.introTransitionActive = false;
+  }
   applyAnimation() {
     // Continuous rotation for button wrappers
     
@@ -46,7 +78,7 @@ class CompensationGame {
       });
     });
     
-    gsap.to([".comp-button-wrapper", ".check-list-wrapper"], {
+    gsap.to([".comp-button-wrapper", ".check-list-wrapper", ".introButtonWrapper"], {
       rotation: 360,
       duration: 24,
       repeat: -1,
@@ -189,6 +221,13 @@ class CompensationGame {
     this.applyAnimation();
   }
 }
+
+// start the bg video
+const video = document.querySelector(".video-loop");
+if (video) {
+  video.play().catch(error => console.log("Autoplay failed:", error));
+}
+// start the introduction 
 
 // Initialize the game
 const game = new CompensationGame();
