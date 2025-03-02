@@ -38,22 +38,33 @@ class CompensationGame {
   }
 
   async transitionIntro() {
-    await this.clearScene();
-    this.currentIntroScene = introData[this.currentIntroScene+1];
+    await this.clearIntroScene();
+    this.currentIntroScene = this.currentIntroScene + 1;
     await this.renderIntroScene();
   }
   
   async renderIntroScene() {
+    const currentScene = introData[this.currentIntroScene];
+    console.log("current intro scene: ", currentScene.text)
     // make the circular div with children that wrap it
     const introButton = document.createElement("div");
     // add the class
     introButton.classList.add('introButton');
-    introButton.textContent = introData[this.currentIntroScene].text;
+    introButton.classList.add('driftIntro');
+    introButton.textContent = currentScene.text;
     // make the wrappers
+    const wrappers = [];
+    let parent = introButton;
+
     for( let i=0; i<3; i++) {
+      
       const wrappButton = document.createElement("div"); 
       wrappButton.classList.add('introButtonWrapper');
-      introButton.appendChild( wrappButton );
+      wrappButton.classList.add('driftIntro');
+      wrappers.push( wrappButton );
+      
+      parent.appendChild(wrappButton); // Append to the last created wrapper
+      parent = wrappButton;
     }
     this.container.appendChild(introButton);
     // apply the animation
@@ -71,16 +82,34 @@ class CompensationGame {
       gsap.to(el, {
         x: "random(-50, 50, 10)", // Random horizontal drift
         y: "random(-50, 50, 10)", // Random vertical drift
-        duration: "random(12, 24)", // Different speeds
+        duration: "random(24, 48)", // Different speeds
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+    });
+    // drift for intro
+    gsap.utils.toArray(".driftIntro").forEach((el) => {
+      gsap.to(el, {
+        x: "random(-10, 10)", // Random horizontal drift
+        y: "random(-10, 10)", // Random vertical drift
+        duration: "random(24, 48)", // Different speeds
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
       });
     });
     
-    gsap.to([".comp-button-wrapper", ".check-list-wrapper", ".introButtonWrapper"], {
+    gsap.to([".comp-button-wrapper", ".check-list-wrapper"], {
       rotation: 360,
-      duration: 24,
+      duration: "random(24, 48)",
+      repeat: -1,
+      ease: "linear"
+    });
+    // spin for intro button
+    gsap.to([".introButtonWrapper"], {
+      rotation: 360,
+      duration: "random(114, 148)",
       repeat: -1,
       ease: "linear"
     });
@@ -93,6 +122,15 @@ class CompensationGame {
 
 
   }
+  async clearIntroScene() {
+    this.container.style.filter = 'blur(5px)';
+    this.container.style.opacity = '0';
+    // Wait for the fade-out effect
+    await new Promise(resolve => setTimeout(resolve, this.fadeTime));
+    // Clear the container after fading out
+    this.container.innerHTML = '';
+  }
+
   async clearScene() {
     if (!this.choiceContainer) return; // Safety check
 
