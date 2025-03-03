@@ -8,6 +8,7 @@ class CompensationGame {
     this.game = document.querySelector('#game');
     this.title = document.querySelector('#title');
     this.container = document.querySelector('.container');
+    this.introContainer = document.querySelector('.intro-container');
     this.choiceContainer = document.querySelector('.choice-container');
     this.loadMessage = document.querySelector('.load-screen');
     this.fadeTime = 1000;
@@ -21,20 +22,32 @@ class CompensationGame {
     this.clearScene();
     this.introTransitionActive = true;
     setTimeout(() => this.renderIntroScene(), this.fadeTime);
-    this.container.addEventListener("click", () => {
-      if(!this.introTransitionActive) {
-        this.introTransitionActive = true;
-        if(this.currentIntroScene > 5) {
-          // Start the game
-          this.introTime = false;
-          this.clearScene();
-          setTimeout(() => this.renderScene(), this.fadeTime);
-        } else {
-          console.log("trigger container event?", this.currentIntroScene)
-          this.transitionIntro();
+    if (this.introContainer) {
+      this.introContainer.addEventListener("click", () => {
+        if(!this.introTransitionActive) {
+          this.introTransitionActive = true;
+          if(this.currentIntroScene >= 5) {
+            console.log("start the game!")
+            // Start the game
+            this.clearIntroScene();
+            
+
+            setTimeout(() => {
+              this.introContainer.style.pointerEvents = 'none';
+              this.renderScene()
+            
+            
+            
+            }, this.fadeTime);
+          } else {
+            console.log("trigger container event?", this.currentIntroScene)
+            this.transitionIntro();
+          }
         }
-      }
-    });
+      });
+      
+    }
+    
   }
 
   async transitionIntro() {
@@ -45,33 +58,36 @@ class CompensationGame {
   
   async renderIntroScene() {
     const currentScene = introData[this.currentIntroScene];
-    console.log("current intro scene: ", currentScene.text)
     // make the circular div with children that wrap it
     const introButton = document.createElement("div");
     // add the class
     introButton.classList.add('introButton');
-    introButton.classList.add('driftIntro');
-    introButton.textContent = currentScene.text;
+    
+    // make the text element
+    const textElem = document.createElement("p");
+    textElem.classList.add("introButtonText");
+    textElem.textContent = currentScene.text;
+    introButton.appendChild( textElem );
     // make the wrappers
     const wrappers = [];
-    let parent = introButton;
 
     for( let i=0; i<3; i++) {
       
       const wrappButton = document.createElement("div"); 
       wrappButton.classList.add('introButtonWrapper');
       wrappButton.classList.add('driftIntro');
+      wrappButton.style.width = `${100 + (i*20)}%` 
+      wrappButton.style.height = `${100 + (i*20)}%` 
       wrappers.push( wrappButton );
       
-      parent.appendChild(wrappButton); // Append to the last created wrapper
-      parent = wrappButton;
+      introButton.appendChild(wrappButton); // Append to the last created wrapper
     }
-    this.container.appendChild(introButton);
+    this.introContainer.appendChild(introButton);
     // apply the animation
     this.applyAnimation();
     // fade in
-    this.container.style.filter = 'blur(0px)';
-    this.container.style.opacity = '1';
+    this.introContainer.style.filter = 'blur(0px)';
+    this.introContainer.style.opacity = '1';
     
     this.introTransitionActive = false;
   }
@@ -89,14 +105,26 @@ class CompensationGame {
       });
     });
     // drift for intro
-    gsap.utils.toArray(".driftIntro").forEach((el) => {
+    gsap.utils.toArray(".driftIntro").forEach((el, idx) => {
+      // const scaler = 50/(idx+1 * 5);
+      const scaler = 50;
       gsap.to(el, {
-        x: "random(-10, 10)", // Random horizontal drift
-        y: "random(-10, 10)", // Random vertical drift
+        x: `random(${-scaler}, ${scaler}, 1)`, // Random horizontal drift
+        y: `random(${-scaler}, ${scaler}, 1)`, // Random vertical drift
         duration: "random(24, 48)", // Different speeds
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
+        force3D: true
+      });
+      // spin for intro button
+      const invert = ((idx%2) * 2) - 1;
+      gsap.to(el, {
+        rotation: 360 * invert,
+        duration: "random(24, 148)",
+        repeat: -1,
+        ease: "linear",
+        force3D: true
       });
     });
     
@@ -106,29 +134,30 @@ class CompensationGame {
       repeat: -1,
       ease: "linear"
     });
-    // spin for intro button
-    gsap.to([".introButtonWrapper"], {
-      rotation: 360,
-      duration: "random(114, 148)",
-      repeat: -1,
-      ease: "linear"
-    });
+    
+    
 
-    // Pause animation on hover
+    
     document.querySelectorAll(".comp-button, .check-list-button").forEach((button) => {
-      button.addEventListener("mouseenter", () => gsap.to(button, { paused: true }));
-      button.addEventListener("mouseleave", () => gsap.to(button, { paused: false }));
+      // Pause animation on hover
+      button.addEventListener("mouseenter", () => {
+        gsap.getTweensOf(button).forEach(tween => tween.pause());
+      });
+      button.addEventListener("mouseleave", () => {
+        gsap.getTweensOf(button).forEach(tween => tween.resume());
+      });
+      
     });
 
 
   }
   async clearIntroScene() {
-    this.container.style.filter = 'blur(5px)';
-    this.container.style.opacity = '0';
+    this.introContainer.style.filter = 'blur(5px)';
+    this.introContainer.style.opacity = '0';
     // Wait for the fade-out effect
     await new Promise(resolve => setTimeout(resolve, this.fadeTime));
-    // Clear the container after fading out
-    this.container.innerHTML = '';
+    // Clear the introContainer after fading out
+    this.introContainer.innerHTML = '';
   }
 
   async clearScene() {
@@ -154,7 +183,7 @@ class CompensationGame {
   }
 
   createChoiceButton(choice, type) {
-    const button = document.createElement('buttton');
+    const button = document.createElement('button');
     const buttonWrap = document.createElement('div');
     
     // change class if a checklist
