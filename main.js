@@ -209,7 +209,9 @@ class CompensationGame {
 
   createYesNo( yes, no ) {
     const noYesWrapper = document.createElement('div');
-    noYesWrapper.className = "noYesWrapper"; 
+    noYesWrapper.className = "noYesWrapper";
+    noYesWrapper.style.display = 'flex'; 
+    noYesWrapper.style.flexFlow = 'row'; 
     
     function makeButton( text ) {
       const button = document.createElement('button'); 
