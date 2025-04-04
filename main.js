@@ -58,6 +58,14 @@ class CompensationGame {
   
   async renderIntroScene() {
     const currentScene = introData[this.currentIntroScene];
+    // click anywhere to continue tag
+    const clickTag = document.createElement("p");
+    clickTag.innerText = "Click anywhere to continue.";
+    clickTag.style.position = "absolute";
+    clickTag.style.bottom = "0";
+    clickTag.style.color = "rgba(255,255,255,0.4)";
+    clickTag.style.fontSize = '1rem';
+
     // make the circular div with children that wrap it
     const introButton = document.createElement("div");
     // add the class
@@ -83,6 +91,7 @@ class CompensationGame {
       introButton.appendChild(wrappButton); // Append to the last created wrapper
     }
     this.introContainer.appendChild(introButton);
+    this.introContainer.appendChild(clickTag);
     // apply the animation
     this.applyAnimation();
     // fade in
