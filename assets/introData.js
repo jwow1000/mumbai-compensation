@@ -1,9 +1,9 @@
 export const introData = [
   {"text": "What is Compensation's limit?"},
   
-  {"text": "The Mumbai Coastal Road (MCR) was initiated in 2018 to extend north and south from the existing Bandra Worli Sea Link on the western coast of Mumbai."},
+  {"text": "Construction for the Mumbai Coastal Road (MCR) began in 2018. It extends north and south from the existing Bandra Worli Sea Link on the western coast of Mumbai."},
   
-  {"text": "The development of MCR involved land reclamation and the construction of a seawall along the coastline which drastically impacted the coastal ecology and the communities who’s cultural and material lives depended on fishing."},
+  {"text": "The development of the MCR involved land reclamation and the construction of a seawall along the coastline which drastically impacted the coastal ecology and the communities who’s cultural and material lives depended on fishing."},
   
   {"text": "In 2023, the Tata Institute of Social Sciences conducted research with two fishing communities, including Worli Koliwada, to advise the Brihanmumbai Municipal Corporation on how best to compensate the affected fishing communities."},
   
