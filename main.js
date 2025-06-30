@@ -190,8 +190,28 @@ class CompensationGame {
     this.currentScene = dataMap[nextSceneKey];
     await this.renderScene();
   }
+  
+  conditionalYesButton(yes) {
+    // get all checklist buttons, compare yes
+    const checks = document.querySelectorAll('.check-list-button').length;
+    const checksYes = document.querySelectorAll('.selected').length;
+    if( checksYes >= checks ) {
+      // make the yes button
+      const yesButton = this.makeButton("Yes");
+      // yes button
+      yesButton.addEventListener('click', () => {
+        // get all checklist buttons, compare yes
+        this.transitionToScene(yes.link);
+      });
+      // add yes button to div
+      const noYesWrapper = document.querySelector('.noYesWrapper');
+      noYesWrapper.appendChild(yesButton);
+    } else {
+      // some kind of no
+    }
+  }
 
-  createChoiceButton(choice, type) {
+  createChoiceButton(choice, type, yes) {
     const button = document.createElement('button');
     const buttonWrap = document.createElement('div');
     
@@ -205,6 +225,7 @@ class CompensationGame {
       // Add click handler for toggle states
       button.addEventListener('click', () => {
         button.classList.toggle('selected');
+        this.conditionalYesButton(yes);
       }); 
     } else {
       // Add click handler for choices
@@ -215,14 +236,7 @@ class CompensationGame {
     button.appendChild( buttonWrap );
     return button ;
   }
-
-  createYesNo( yes, no ) {
-    const noYesWrapper = document.createElement('div');
-    noYesWrapper.className = "noYesWrapper";
-    noYesWrapper.style.display = 'flex'; 
-    noYesWrapper.style.flexFlow = 'row'; 
-    
-    function makeButton( text ) {
+  makeButton( text ) {
       const button = document.createElement('button'); 
       const buttonWrap = document.createElement('div');
       button.className = 'comp-button';
@@ -231,28 +245,31 @@ class CompensationGame {
       button.innerText = text;
       button.appendChild( buttonWrap );
       return button;
-    }
+  }
 
-    // yes button
-    const yesButton = makeButton('Yes');
-    yesButton.addEventListener('click', () => {
-      // get all checklist buttons, compare yes
-      const checks = document.querySelectorAll('.check-list-button').length;
-      const checksYes = document.querySelectorAll('.selected').length;
-      if( checksYes >= checks ) {
-        this.transitionToScene(yes.link);
-      } else {
-        // some kind of no
-      }
-    });
+  createYesNo( yes, no ) {
+    const noYesWrapper = document.createElement('div');
+    noYesWrapper.className = "noYesWrapper";
+    noYesWrapper.style.display = 'flex'; 
+    noYesWrapper.style.flexFlow = 'row'; 
+    
+    // function makeButton( text ) {
+    //   const button = document.createElement('button'); 
+    //   const buttonWrap = document.createElement('div');
+    //   button.className = 'comp-button';
+    //   button.classList.add('drift');
+    //   buttonWrap.className = 'comp-button-wrapper';
+    //   button.innerText = text;
+    //   button.appendChild( buttonWrap );
+    //   return button;
+    // }
 
     // no button
-    const noButton = makeButton('No');
+    const noButton = this.makeButton('No');
     noButton.addEventListener('click', () => {
       this.transitionToScene(no.link);
     });
 
-    noYesWrapper.appendChild( yesButton );
     noYesWrapper.appendChild( noButton );
     this.choiceContainer.appendChild( noYesWrapper );
   }
@@ -265,7 +282,7 @@ class CompensationGame {
       // Create and add checks buttons
       console.log("checklist?")
       const buttons = this.currentScene.checklist.map(choice => { 
-        return this.createChoiceButton(choice, 'checks');
+        return this.createChoiceButton(choice, 'checks', this.currentScene.choices[0]);
       });
       // append the checks buttons to the container
       buttons.forEach( (button) => {
