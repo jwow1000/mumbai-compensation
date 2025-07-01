@@ -205,7 +205,7 @@ class CompensationGame {
       });
       // add yes button to div
       const noYesWrapper = document.querySelector('.noYesWrapper');
-      noYesWrapper.appendChild(yesButton);
+      noYesWrapper.prepend(yesButton);
     } else {
       // some kind of no
     }
