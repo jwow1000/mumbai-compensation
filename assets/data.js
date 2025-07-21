@@ -49,69 +49,76 @@ export const dataMap = {
   },
   
   "hodi": {
-    "label": `₹ 1,75,000.00 per year for the 5 year duration of construction.
-
-    Permanent loss of livelihood and income from fishing.
-
-    A host of welfare benefits aimed at inproving your livelihood as part of the fishing community...`,
+    "label": `
+      Congratulations!! You will receive ₹175,000(INR)/$2,029(USD) per year for five years for the temporary loss of fishing income due to the coastal road construction. 
+      
+      You may also receive iceboxes and improvements to fishing infrastructure aimed at improving your livelihood. 
+      
+      Any more permanent losses to livelihood on account of the coastal road will not be compensated.
+    `,
 
     "choices": [
       {"label": "Replay", "link": "start"},
     ]
   },
   "cyl1": {
-    "label": `₹ 2,29,810.39 per year for the 5 year duration of construction.
-
-
-    Permanent loss of livelihood and income from fishing.
-
-    A host of welfare benefits aimed at inproving your livelihood as part of the fishing community..`,
-
+    "label": `
+      Congratulations!! You will receive ₹229,810(INR)/$2,665(USD) per year for five years for the temporary loss of fishing income due to the coastal road construction. 
+      
+      You may also receive iceboxes and improvements to fishing infrastructure aimed at improving your livelihood. 
+      
+      Any more permanent losses to livelihood on account of the coastal road will not be compensated.
+    `,
     "choices": [
       {"label": "Replay", "link": "start"},
     ]
   },
   "cyl2": {
-    "label": `₹ 2,99,795.11 per year for the 5 year duration of construction.
-
-
-    Permanent loss of livelihood and income from fishing.
-
-    A host of welfare benefits aimed at inproving your livelihood as part of the fishing community..`,
+    "label": `
+      Congratulations!! You will receive ₹299,795(INR)/$3,476(USD) per year for five years for the temporary loss of fishing income due to the coastal road construction. 
+      
+      You may also receive iceboxes and improvements to fishing infrastructure aimed at improving your livelihood. 
+      
+      Any more permanent losses to livelihood on account of the coastal road will not be compensated.
+    `,
 
     "choices": [
       {"label": "Replay", "link": "start"},
     ]
   },
   "cyl3": {
-    "label": `₹ 3,29,774.62 per year for the 5 year duration of construction.
-
-    Permanent loss of livelihood and income from fishing.
-
-    A host of welfare benefits aimed at inproving your livelihood as part of the fishing community..`,
-
+    "label": `
+      Congratulations!! You will receive ₹329,774(INR)/$3,824(USD) per year for five years for the temporary loss of fishing income due to the coastal road construction. 
+      
+      You may also receive iceboxes and improvements to fishing infrastructure aimed at improving your livelihood. 
+      
+      Any more permanent losses to livelihood on account of the coastal road will not be compensated.
+    `,
     "choices": [
       {"label": "Replay", "link": "start"},
     ]
   },
   "cyl4": {
-    "label": `₹ 4,15,366.99 per year for the 5 year duration of construction.
-
-
-    Permanent loss of livelihood and income from fishing.
-
-    A host of welfare benefits aimed at inproving your livelihood as part of the fishing community..`,
+    "label": `
+      Congratulations!! You will receive ₹415,366(INR)/$4,816(USD) per year for five years for the temporary loss of fishing income due to the coastal road construction. 
+      
+      You may also receive iceboxes and improvements to fishing infrastructure aimed at improving your livelihood. 
+      
+      Any more permanent losses to livelihood on account of the coastal road will not be compensated.
+    `,
 
     "choices": [
       {"label": "Replay", "link": "start"},
     ]
   },
   "cyl6": {
-    "label": `₹ 4,56,903.68 per year for the 5 year duration of construction.
-    
-    Permanent loss of livelihood and income from fishing.
-
-    A host of welfare benefits aimed at inproving your livelihood as part of the fishing community..`,
+    "label": `
+      Congratulations!! You will receive ₹456,903(INR)/$5,298(USD) per year for five years for the temporary loss of fishing income due to the coastal road construction. 
+      
+      You may also receive iceboxes and improvements to fishing infrastructure aimed at improving your livelihood. 
+      
+      Any more permanent losses to livelihood on account of the coastal road will not be compensated.
+    `,
 
     "choices": [
       {"label": "Replay", "link": "start"},

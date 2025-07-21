@@ -1,5 +1,5 @@
 export const introData = [
-  {"text": "What is Compensation's limit?"},
+  {"text": "The Limits of Compensation"},
   
   {"text": "Construction for the Mumbai Coastal Road (MCR) began in 2018. It extends north and south from the existing Bandra Worli Sea Link on the western coast of Mumbai."},
   
